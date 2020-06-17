@@ -430,6 +430,9 @@ esac
 # THIS TABLE IS ALPHA SORTED.  KEEP IT THAT WAY.
 
 case "${host}" in
+  *-*-ollios*)
+	sys_dir=ollios
+	;;
   *-*-cygwin*)
 	posix_dir=posix
 	stdio64_dir=stdio64

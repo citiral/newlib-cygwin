@@ -5,28 +5,11 @@
 #include <sys/times.h>
 #include <sys/errno.h>
 #include <sys/time.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
-
-#define SYSINT_OPEN   1
-#define SYSINT_CLOSE  2
-#define SYSINT_WRITE  3
-#define SYSINT_READ   4
-#define SYSINT_EXIT   5
-#define SYSINT_FORK   6
-#define SYSINT_GETPID 7
-#define SYSINT_EXECVE 8
-#define SYSINT_WAIT   9
-#define SYSINT_ISATTY 10
-#define SYSINT_LSEEK  11
-#define SYSINT_FSTAT  12
-#define SYSINT_KILL   13
-#define SYSINT_LINK   14
-#define SYSINT_SBRK   15
-#define SYSINT_TIMES  16
-#define SYSINT_UNLINK 17
-#define SYSINT_PIPE   18
-#define SYSINT_DUP    19
-#define SYSINT_DUP2   20
+#include "sys/syscalls.h"
+#include "dirent.h"
 
 extern int sysint(unsigned int eax, unsigned int ebx, unsigned int ecx, unsigned int edx, unsigned int esi, unsigned int edi, unsigned int ebp);
 
@@ -137,9 +120,58 @@ int dup(int filedes)
     return sysint(SYSINT_DUP, (unsigned int)filedes, 0, 0, 0, 0, 0);
 }
 
-
 int dup2(int filedes, int filedes2)
 {
     return sysint(SYSINT_DUP2, *((unsigned int*)&filedes), *((unsigned int*)&filedes2), 0, 0, 0, 0);
 }
 
+int _readdir(int filedes, struct dirent* dirent)
+{
+    return sysint(SYSINT_READDIR, *((unsigned int*)&filedes), *((unsigned int*)&dirent), 0, 0, 0, 0);
+}
+
+
+char *getcwd(char *buf, size_t size)
+{
+    return sysint(SYSINT_GETWD, (unsigned int*) buf, *((unsigned int*)&size), 0, 0, 0, 0);
+}
+
+DIR* opendir(const char *dirname)
+{
+    DIR* dir = malloc(sizeof(DIR));
+    if (dir == NULL) {
+        return NULL;
+    }
+
+    memset(dir, 0, sizeof(DIR));
+    dir->fd = open(dirname, 0);
+
+    return dir;
+}
+
+int closedir(DIR *dirp)
+{
+    if (dirp == NULL) {
+        return -1;
+    }
+
+    close(dirp->fd);
+    free(dirp);
+    return 0;
+}
+
+struct dirent *readdir(DIR *dirp)
+{
+    if (dirp == NULL)
+    {
+        return NULL;
+    }
+
+    int result = _readdir(dirp->fd, &dirp->dirent);
+
+    if (result == 0) {
+        return &dirp->dirent;
+    } else {
+        return NULL;
+    }
+}

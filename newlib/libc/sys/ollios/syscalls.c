@@ -24,6 +24,9 @@
 #define SYSINT_SBRK   15
 #define SYSINT_TIMES  16
 #define SYSINT_UNLINK 17
+#define SYSINT_PIPE   18
+#define SYSINT_DUP    19
+#define SYSINT_DUP2   20
 
 extern int sysint(unsigned int eax, unsigned int ebx, unsigned int ecx, unsigned int edx, unsigned int esi, unsigned int edi, unsigned int ebp);
 
@@ -124,4 +127,19 @@ int write(int file, char *ptr, int len)
     return sysint(SYSINT_WRITE, *((unsigned int*)&file), (unsigned int)ptr, *((unsigned int*)&len), 0, 0, 0);
 }
 
+int pipe(int pipefd[2])
+{
+    return sysint(SYSINT_PIPE, (unsigned int)pipefd, 0, 0, 0, 0, 0);
+}
+
+int dup(int filedes)
+{
+    return sysint(SYSINT_DUP, (unsigned int)filedes, 0, 0, 0, 0, 0);
+}
+
+
+int dup2(int filedes, int filedes2)
+{
+    return sysint(SYSINT_DUP2, *((unsigned int*)&filedes), *((unsigned int*)&filedes2), 0, 0, 0, 0);
+}
 

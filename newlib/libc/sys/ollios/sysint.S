@@ -1,4 +1,3 @@
-
 .globl sysint
 sysint:
 
@@ -18,12 +17,14 @@ pushl %esi
 movl 40(%esp), %esi
 
 pushl %edi
-movl 48(%esp), %edi
+movl $ret, %edi
 
 pushl %ebp
-movl 56(%esp), %ebp
+movl %esp, %ebp
 
-int $0x80 
+sysenter
+
+ret:
 
 popl %ebp
 popl %edi

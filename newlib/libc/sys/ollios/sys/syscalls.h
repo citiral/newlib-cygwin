@@ -23,5 +23,6 @@
 #define SYSINT_DUP2   20
 #define SYSINT_READDIR 21
 #define SYSINT_GETWD  22
+#define SYSINT_USLEEP 23
 
 #endif

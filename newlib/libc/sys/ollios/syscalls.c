@@ -175,3 +175,14 @@ struct dirent *readdir(DIR *dirp)
         return NULL;
     }
 }
+
+int usleep(useconds_t usec)
+{
+    unsigned int v = usec;
+    return sysint(SYSINT_USLEEP, v, 0, 0, 0);   
+}
+
+unsigned int sleep(unsigned int seconds)
+{
+    return usleep(seconds*1000000);
+}

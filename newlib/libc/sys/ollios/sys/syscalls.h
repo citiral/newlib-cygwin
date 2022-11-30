@@ -24,5 +24,18 @@
 #define SYSINT_READDIR 21
 #define SYSINT_GETWD  22
 #define SYSINT_USLEEP 23
-
+#define SYSINT_GET_CMOS_UTC 24
 #endif
+
+
+typedef struct _cmos_time {
+    uint8_t seconds;
+    uint8_t minutes;
+    uint8_t hours;
+    uint8_t day;
+    uint8_t month;
+    uint8_t year;
+} cmos_time_t;
+
+
+int _get_cmos_utc(cmos_time_t *ct):

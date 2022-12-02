@@ -1,6 +1,8 @@
 #ifndef _SYSCALLS_H_
 #define _SYSCALLS_H_
 
+#include <stdint.h>
+
 #define SYSINT_OPEN   1
 #define SYSINT_CLOSE  2
 #define SYSINT_WRITE  3
@@ -38,4 +40,4 @@ typedef struct _cmos_time {
 } cmos_time_t;
 
 
-int _get_cmos_utc(cmos_time_t *ct):
+int _get_cmos_utc(cmos_time_t *ct);

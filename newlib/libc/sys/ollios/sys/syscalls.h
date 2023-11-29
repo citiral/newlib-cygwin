@@ -27,6 +27,8 @@
 #define SYSINT_GETWD  22
 #define SYSINT_USLEEP 23
 #define SYSINT_GET_CMOS_UTC 24
+#define SYSINT_CHDIR 25
+#define SYSINT_ACCESS 26
 #endif
 
 

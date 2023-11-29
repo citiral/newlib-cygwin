@@ -23,7 +23,7 @@ int close(int file)
     return sysint(SYSINT_CLOSE, *((unsigned int*)&file), 0, 0, 0);
 }
 
-char **environ; /* pointer to array of char * strings that define the current environment variables */
+extern char **environ; /* pointer to array of char * strings that define the current environment variables */
 
 int execve(char *name, char **argv, char **env)
 {
@@ -136,6 +136,11 @@ char *getcwd(char *buf, size_t size)
     return sysint(SYSINT_GETWD, (unsigned int*) buf, *((unsigned int*)&size), 0, 0);
 }
 
+int chdir(const char *path)
+{
+    return sysint(SYSINT_CHDIR, (unsigned int*) path, 0, 0, 0);
+}
+
 DIR* opendir(const char *dirname)
 {
     DIR* dir = malloc(sizeof(DIR));
@@ -185,4 +190,9 @@ int usleep(useconds_t usec)
 unsigned int sleep(unsigned int seconds)
 {
     return usleep(seconds*1000000);
+}
+
+int access(const char *pathname, int mode)
+{
+    return sysint(SYSINT_ACCESS, (unsigned int*) pathname, mode, 0, 0);
 }

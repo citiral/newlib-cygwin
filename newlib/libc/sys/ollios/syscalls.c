@@ -196,3 +196,8 @@ int access(const char *pathname, int mode)
 {
     return sysint(SYSINT_ACCESS, (unsigned int*) pathname, mode, 0, 0);
 }
+
+int gettimeofday (struct timeval *__restrict __p, void* a)
+{
+    return 0;
+}
